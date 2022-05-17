@@ -7,6 +7,11 @@ func main() {
 	findSubStringLength("abcdef")
 	findSubStringLength("aaaaa")
 	findSubStringLength("abaccab")
+	
+	
+	LongestSubstring("abcdef")
+	LongestSubstring("aaaaa")
+	LongestSubstring("abaccab")
 }
 
 // Find longest substring with at most two distinct characters
@@ -42,10 +47,33 @@ func findSubStringLength(someString string) int {
 	return max(counter, len(someString) - firstChar)
 }
 
-
-func max(n, m int) int {
-	if n > m {
-		return n
+func LongestSubstring(s string) int {
+	left := 0
+	result := 0
+	counter := make(map[byte]byte)
+	
+	for right := range s {
+		counter[s[right]] += 1
+		
+		for len(counter) > 2 {
+			leftChar := s[left]
+			counter[leftChar] -= 1
+			if counter[leftChar] == 0 {
+				delete(counter, leftChar)
+			}
+			left += 1
+		}
+		result = max(result, right - left + 1)
 	}
-	return m
+	fmt.Println("result", result)
+	return result
+}
+
+
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
 }
